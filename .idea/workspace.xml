@@ -8,7 +8,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9eaaad01-6913-4d2b-965e-7e032d7f9dc8" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/../../BlogDemos/BlogDemos/src/Singleton/SingletonDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/log4j.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../SSM from zero to hero/Mbooks/.idea/compiler.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../SSM from zero to hero/Mbooks/.idea/misc.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../SSM from zero to hero/Mbooks/.idea/sqldialects.xml" beforeDir="false" />
@@ -82,8 +84,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jalinyiel/ssmDemo/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jalinyiel/ssmDemo/service/EmployeeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webApp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webApp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/jalinyiel/ssmDemo/controller/EmployeeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/jalinyiel/ssmDemo/service/EmployeeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/jalinyiel/ssmDemo/controller/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/jalinyiel/ssmDemo/controller/EmployeeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/jalinyiel/ssmDemo/service/EmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/jalinyiel/ssmDemo/service/EmployeeService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis-config.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -554,7 +556,7 @@
       <workItem from="1557972025607" duration="21863000" />
       <workItem from="1558057535885" duration="27550000" />
       <workItem from="1558099766378" duration="6946000" />
-      <workItem from="1558142777591" duration="10831000" />
+      <workItem from="1558142777591" duration="11157000" />
     </task>
     <servers />
   </component>
@@ -591,7 +593,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84807000" />
+    <option name="totallyTimeSpent" value="85133000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
