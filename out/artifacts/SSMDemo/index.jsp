@@ -7,7 +7,7 @@
     %>
     <!-- 引入JQuery -->
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title>员工列表</title>
+    <title>极简SSM整合：单页CRUD</title>
     <!-- 引入bootstrap -->
     <link href = "${APP_PATH}/bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src = "${APP_PATH}/bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
@@ -115,7 +115,7 @@
         <!-- 标题 -->
         <div class = "row">
             <div class = "col-md-12">
-                <h1>SSM-SimpleDemo</h1>
+                <h1>极简SSM整合：单页CRUD</h1>
             </div>
         </div>
         <!-- 按钮 -->
@@ -131,6 +131,9 @@
                 <table class="table table-hover" id = "emps_table">
                     <thead>
                     <tr>
+                        <th>
+                            <input type = "checkbox" id = "chooseAll"/>
+                        </th>
                         <th>Employee_ID</th>
                         <th>Employee_Name</th>
                         <th>Gender</th>
@@ -186,6 +189,7 @@
             $("#emps_table tbody").empty();
             var emp = result.pageMsg.pageInfo.list;
             $.each(emp,function(index,item){
+                var checkEmp = $("<td><input type = \"checkbox\" class = 'checkId' /></td>");
                 var empId = $("<td></td>").append(item.empId);
                 var empName = $("<td></td>").append(item.empName);
                 var gender = $("<td></td>").append(item.gender == "M" ? "男":"女");
@@ -196,7 +200,7 @@
                 var delButton = $("<button></button>").addClass("btn btn-warning btn-primary btn-sm delete_button")
                     .append($("<span></span>").addClass("glyphicon glyphicon-trash")).append("删除").attr("deleId",item.empId);
                 var buttonTd = $("<td></td>").append(editButton).append(" ").append(delButton);
-                $("<tr></tr>").append(empId).append(empName).append(gender).append(email).append(deptNmae)
+                $("<tr></tr>").append(checkEmp).append(empId).append(empName).append(gender).append(email).append(deptNmae)
                     .append(buttonTd).appendTo("#emps_table tbody");
             });
         }
@@ -237,7 +241,6 @@
                     jump(result.pageMsg.pageInfo.pageNum+1);
                 });
             }
-
             ul.append(firstPage).append(previousPage);
             $.each(result.pageMsg.pageInfo.navigatepageNums,function(index,item) {
                 var numLi =  $("<li></li>").append($("<a></a>").append(item).attr("href","#"));
@@ -267,7 +270,7 @@
             var empId = $(this).attr("editId");
             $("#inputUpdateEmail").parent().removeClass("has-error has-success");
             $("#emailUpdateHelpBlock").text(" ");
-            getDepts("#update_dept_name");
+            getDepts("#update_dept_name");  //先获取下拉列表信息
             getEmpInfo(empId);
             $("#update_emp_save_button").attr("empId",empId);
             $("#updateModal").modal({
@@ -300,6 +303,7 @@
             })
         })
 
+        //获取被点击编辑按钮的员工信息
         function getEmpInfo(id) {
             $.ajax({
                 url:"${APP_PATH}/emps/" + id,
@@ -308,11 +312,11 @@
                     $("#update_emp_name").text(result.pageMsg.emp.empName);
                     $("#inputUpdateEmail").val(result.pageMsg.emp.email);
                     $("#updateModal input[name = gender]").val([result.pageMsg.emp.gender]);
-                    alert(result.pageMsg.emp.dId);
                     $("#updateModal select").val([result.pageMsg.emp.dId]);
                 }
             })
         }
+        //清除指定表单上的信息
         function resetForm(elem) {
             $(elem)[0].reset();
             $(elem).find("*").removeClass("has-error has-success");
@@ -360,7 +364,7 @@
                 }
             });
         }
-
+        //姓名栏变化时发送AJAX请求验证是否重复
         $("#inputAddEmpName").change(function check() {
             $.ajax({
                 url:"${APP_PATH}/checkEmpName",
@@ -384,7 +388,7 @@
                 }})
         })
 
-        //点击模态框保存按钮触发的事件
+        //点击模态框保存按钮触发的事件：进行前后端校验，检验完成后关闭模态框并跳转至最后一页
         $("#emp_save_button").click(function() {
             if($(this).attr("check") == "error") {
                 return false;
@@ -405,6 +409,53 @@
                     }
                 }
             })
+        })
+
+        //点击员工删除按钮触发的事件：弹出确认框，确认后返回原先页面
+        $(document).on("click",".delete_button",function() {
+            var empName = $(this).parents("tr").find("td:eq(2)").text();
+            var empId = $(this).attr("deleId");
+            if(confirm("确定要删除 " + empName + " 吗？" )) {
+                $.ajax({
+                    url:"${APP_PATH}/emps/delete/" + empId,
+                    type:"POST",
+                    success: function(result) {
+                        alert(result.msg);
+                        jump(currentPage);
+                    }
+                })
+            }
+        })
+
+        //点击全选框触发的事件:改变全部员工选择框的选择状态
+        $("#chooseAll").click(function () {
+            $(".checkId").prop("checked",$(this).prop("checked"));
+        })
+        //点击单个员工选择框触发的事件:影响全选框的选择状态
+        $(document).on("click",".checkId",function() {
+            var flags = $(".checkId:checked").length == $(".checkId").length;
+            $("#chooseAll").prop("checked",flags);
+        })
+        //点击删除按钮触发的事件
+        $("#delete_modal_button").click(function() {
+            var empsName = "";
+            var empsId = "";
+            $.each($(".checkId:checked"),function(index,item) {
+                empsName += ($(item).parents("tr").find("td:eq(2)").text() + " ");
+                empsId += ($(item).parents("tr").find("td:eq(1)").text() + "_")
+            })
+            empsId = empsId.substring(0,empsId.length-1);
+            if(confirm("确认删除 " + empsName +" 吗？")) {
+                alert("${APP_PATH}/emps/delete/" + empsId);
+                $.ajax({
+                    url:"${APP_PATH}/emps/delete/" + empsId,
+                    type:"POST",
+                    success:function(result) {
+                        alert(result.msg);
+                        jump(currentPage);
+                    }
+                })
+            }
         })
     </script>
 </body>

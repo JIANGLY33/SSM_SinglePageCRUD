@@ -6,6 +6,7 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="LOG4J"/>
     </settings>
     <!-- 为domain包中的类设置别名 -->
     <typeAliases>

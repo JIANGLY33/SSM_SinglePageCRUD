@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jalinyiel.ssmDemo.domain.Employee;
 import com.jalinyiel.ssmDemo.domain.Message;
 import com.jalinyiel.ssmDemo.service.EmployeeService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import java.util.Map;
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
+    Logger logger = Logger.getLogger(EmployeeController.class);
     /**
      * 分页查询所有员工
      @return
@@ -66,20 +69,34 @@ public class EmployeeController {
     @ResponseBody
     @RequestMapping(value = "/emps/{id}",method = RequestMethod.GET)
     public Message getEmp(@PathVariable("id") Integer id) {
-        System.out.println(id);
         Employee emp = employeeService.get(id);
         return Message.success().add("emp",emp);
     }
+
     @ResponseBody
     @RequestMapping(value = "/emps/{empId}",method = RequestMethod.POST)
     public Message updateEmp(Employee employee) {
-        System.out.println("修改前：" + employee);
         employeeService.update(employee);
-        System.out.println("修改后:" + employeeService.get(employee.getdId()));
+        return Message.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/emps/delete/{id}",method = RequestMethod.POST)
+    public Message deleteById(@PathVariable("id") String empId) {
+        if(empId.contains("_")){
+            String[] ids = empId.split("_");
+            List<Integer> res = new LinkedList<>();
+            for(String s:ids) {
+                res.add(Integer.parseInt(s));
+            }
+            employeeService.deleteBatch(res);
+        }else {
+            employeeService.deleteEmp(Integer.parseInt(empId));
+        }
         return Message.success();
     }
     /**
-     * 传统的JSP方式来与页面交互
+     * 传统的JSP方式来与页面交互,仅作示范，在本项目中无实际作用
      * @param pageNum
      * @param model
      * @return
