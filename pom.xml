@@ -93,7 +93,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>  <!-- Spring单元测试要求Junit版本为4.12以上 -->
+            <version>4.13.1</version>  <!-- Spring单元测试要求Junit版本为4.12以上 -->
             <scope>test</scope>
         </dependency>
 
